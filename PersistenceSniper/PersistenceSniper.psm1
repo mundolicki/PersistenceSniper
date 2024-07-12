@@ -168,7 +168,7 @@ function Find-AllPersistence {
 
     [Parameter(Position = 2)]
     [Alias('CR')]
-    [System.Management.Automation.Credential]
+    [System.Management.Automation.Credential()]
     $Credential = $null,
     
     [Parameter(Position = 3)]
