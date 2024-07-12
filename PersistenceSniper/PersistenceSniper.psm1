@@ -2403,7 +2403,7 @@ function Find-AllPersistence {
     Invoke-Command -ComputerName $ComputerName -Credential $Credential -ScriptBlock $ScriptBlock -ErrorAction Continue
   }
   elseif ($ComputerName -and -not $Credential) {
-    Invoke-Command -ComputerName -ScriptBlock $ScriptBlock -ErrorAction Continue
+    Invoke-Command -ComputerName $ComputerName -ScriptBlock $ScriptBlock -ErrorAction Continue
   }
   else {
     Invoke-Command -ScriptBlock $ScriptBlock
