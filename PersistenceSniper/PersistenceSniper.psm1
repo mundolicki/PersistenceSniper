@@ -198,6 +198,9 @@ function Find-AllPersistence {
   $ScriptBlock = 
   {
     $PersistenceMethod = $Using:PersistenceMethod
+    $IncludeHighFalsePositivesChecks = $Using:IncludeHighFalsePositivesChecks
+    $VTApiKey = $Using:VTApiKey
+    $LogFindings = $Using:LogFindings
     $ErrorActionPreference = 'SilentlyContinue'
     $VerbosePreference = $Using:VerbosePreference
     $hostname = ([Net.Dns]::GetHostByName($env:computerName)).HostName
