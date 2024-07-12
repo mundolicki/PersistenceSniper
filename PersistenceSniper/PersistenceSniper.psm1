@@ -46,6 +46,9 @@ function Find-AllPersistence {
       .PARAMETER ComputerName
       Optional, an array of computernames to run the script on.
 
+      .PARAMETER Credential
+      Optional, a PSCredential object to authenticate to remote ComputerName.
+
       .PARAMETER DiffCSV
       Optional, a CSV file to be taken as input and used to exclude from the output all the local persistences which match the ones in the CSV file itself. 
 
@@ -159,26 +162,32 @@ function Find-AllPersistence {
     $PersistenceMethod = 'All',
      
     [Parameter(Position = 1)]
+    [Alias('CN', 'MachineName')]
     [String[]]
     $ComputerName = $null,
-    
+
     [Parameter(Position = 2)]
+    [Alias('CR')]
+    [System.Management.Automation.Credential]
+    $Credential = $null,
+    
+    [Parameter(Position = 3)]
     [String]
     $DiffCSV = $null, 
     
-    [Parameter(Position = 3)]
+    [Parameter(Position = 4)]
     [Switch]
     $IncludeHighFalsePositivesChecks,
         
-    [Parameter(Position = 4)]
+    [Parameter(Position = 5)]
     [String]
     $OutputCSV = $null, 
 
-    [Parameter(Position = 5)]
+    [Parameter(Position = 6)]
     [String]
     $VTApiKey = $null,
     
-    [Parameter(Position = 6)]
+    [Parameter(Position = 7)]
     [Switch]
     $LogFindings
   )
@@ -2390,8 +2399,11 @@ function Find-AllPersistence {
     Write-Verbose -Message "$hostname - Execution finished, outputting results..."
   }
   
-  if ($ComputerName) {
-    Invoke-Command -ComputerName $ComputerName -ScriptBlock $ScriptBlock -ErrorAction Continue
+  if ($ComputerName -and $Credential) {
+    Invoke-Command -ComputerName $ComputerName -Credential $Credential -ScriptBlock $ScriptBlock -ErrorAction Continue
+  }
+  elseif ($ComputerName -and -not $Credential) {
+    Invoke-Command -ComputerName -ScriptBlock $ScriptBlock -ErrorAction Continue
   }
   else {
     Invoke-Command -ScriptBlock $ScriptBlock
